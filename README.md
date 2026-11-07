@@ -106,6 +106,7 @@ beautifulsoup4>=4.12.0
 python-dotenv>=1.0.0
 httpx>=0.27.0
 pydantic>=2.0.0
+python-dotenv>=1.0.0
 
 Установите пакеты:
 
