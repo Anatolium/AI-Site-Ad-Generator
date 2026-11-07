@@ -1,118 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ad Content Generator</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            line-height: 1.5;
+    <title>Создание рекламного поста</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+
+    <script>
+        function startLoading() {
+            document.getElementById("loading").style.display = "flex";
         }
-        .error {
-            color: #dc2626;
-            padding: 1rem;
-            background-color: #fee2e2;
-            border-radius: 0.375rem;
-            margin: 1rem 0;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            margin-top: 0.5rem;
-        }
-        button {
-            background-color: #2563eb;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        button:hover {
-            background-color: #1d4ed8;
-        }
-        .section {
-            margin: 2rem 0;
-            padding: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.375rem;
-        }
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1f2937;
-        }
-        .prompt-item {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background-color: #f3f4f6;
-            border-radius: 0.375rem;
-        }
-        .final-ad {
-            background-color: #ecfdf5;
-            border: 1px solid #34d399;
-        }
-    </style>
+    </script>
 </head>
+
 <body>
-    <h1>Ad Content Generator</h1>
+<div class="container fade-in">
+
+    <!-- Заголовок с SVG-icon -->
+    <h1>
+        <span class="title-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L15 8H9L12 2Z" fill="#fff"/>
+                <path d="M12 22L9 16H15L12 22Z" fill="#fff"/>
+                <path d="M2 12L8 15V9L2 12Z" fill="#fff"/>
+                <path d="M22 12L16 9V15L22 12Z" fill="#fff"/>
+            </svg>
+        </span>
+        Создание рекламного поста
+    </h1>
+
+    <h2 class="sub">Генерация рекламного поста для сайта с помощью ИИ</h2>
 
     {% if error %}
-    <div class="error">
-        {{ error }}
-    </div>
+    <div class="error">{{ error }}</div>
     {% endif %}
 
-    <form method="POST" action="{{ url_for('index') }}">
-        <div class="form-group">
-            <label for="url">Enter website URL to analyze:</label>
-            <input type="text" id="url" name="url" value="{{ url if url }}" required>
+    <!-- Форма -->
+    <form method="POST" onsubmit="startLoading()">
+        <div class="form-row">
+
+            <!-- Иконка в поле ввода -->
+            <span class="input-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12C3 7.03 7.03 3 12 3C14.39 3 16.55 3.94 18.13 5.47L16 7.6"
+                          stroke="#888" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M21 12C21 16.97 16.97 21 12 21C9.61 21 7.45 20.06 5.87 18.53L8 16.4"
+                          stroke="#888" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </span>
+
+            <input type="text" id="url" name="url"
+                   placeholder="Введите ссылку на сайт"
+                   value="{{ url if url }}" required>
+
+            <button type="submit">Анализировать</button>
         </div>
-        <button type="submit">Analyze</button>
     </form>
 
-    {% if prompts %}
-    <div class="section">
-        <div class="section-title">Analysis Steps</div>
-        {% for prompt in prompts %}
-        <div class="prompt-item">
-            {{ prompt }}
-        </div>
-        {% endfor %}
+    <!-- ИНДИКАТОР ЗАГРУЗКИ -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <span>Идет анализ…</span>
     </div>
-    {% endif %}
 
-    {% if analysis_results %}
-    <div class="section">
-        <div class="section-title">Analysis Results</div>
-        {% for result in analysis_results %}
-        <div class="prompt-item">
-            <strong>Step:</strong>
-            <p>{{ result.prompt }}</p>
-            <strong>Result:</strong>
-            <p>{{ result.result }}</p>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <!-- Два окна -->
+    <div class="flex-two fade-in">
 
-    {% if final_ad %}
-    <div class="section final-ad">
-        <div class="section-title">Final Advertisement</div>
-        <div style="white-space: pre-wrap;">{{ final_ad }}</div>
+        <!-- Steps -->
+        <div class="panel steps">
+            {% if prompts %}
+                {% for prompt in prompts %}
+                    <!-- убираем markdown -->
+                    <div class="prompt-item">{{ prompt|replace("**", "") }}</div>
+                {% endfor %}
+            {% else %}
+                <p class="placeholder-text">Промежуточные шаги появятся здесь</p>
+            {% endif %}
+        </div>
+
+        <!-- Final Ad -->
+        <div class="panel final">
+            {% if final_ad %}
+                <!-- убираем markdown и обрезаем ведущие пробелы -->
+                {{ final_ad|replace("**", "")|trim }}
+            {% else %}
+                <p class="placeholder-text">Здесь появится рекламный пост</p>
+            {% endif %}
+        </div>
+
     </div>
-    {% endif %}
+</div>
 </body>
 </html>

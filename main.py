@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from openai_module import (
     generate_future_prompts_from_url,
     query_with_custom_system_prompt,

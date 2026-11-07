@@ -41,13 +41,13 @@ def ask_openai(system_prompt: str, user_message: str, response_format=None) -> s
     ]
     if response_format:
         response = openai_client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages,
             response_format={"type": "json_object"}
         )
     else:
         response = openai_client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages
         )
     return response.choices[0].message.content.strip()
