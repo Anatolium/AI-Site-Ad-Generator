@@ -44,7 +44,7 @@
 - **dotenv**
 
 ## Структура проекта
-
+```text
 ├── templates/
 │   └── index.html          # Веб-интерфейс
 ├── static/
@@ -57,6 +57,7 @@
 ├── openai_template.py      # Обёртка над OpenAI API
 ├── requirements.txt
 └── README.md
+```
 
 ## Установка и запуск
 
